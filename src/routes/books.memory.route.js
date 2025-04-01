@@ -4,8 +4,7 @@ const books = [];
 async function booksMemoryRoute(fastify, options) {
 
   fastify.get('/', async (request, reply) => {
-    //  ⚙️🔥 write your code here ⚙️🔥
-    reply.code(404).send({ error: 'Not implemented' });
+    return books;
   });
 
   const getBookSchema = {
@@ -18,8 +17,18 @@ async function booksMemoryRoute(fastify, options) {
   };
 
   fastify.get('/:id', { schema: getBookSchema }, async (request, reply) => {
-    //  ⚙️🔥 write your code here ⚙️🔥
-    reply.code(404).send({ error: 'Not implemented' });
+    const {id} = request.params;
+    let selected_book = {};
+    let drapeau = false;
+    for (let book of books){
+      if (book.id == id){
+        selected_book = book;
+        drapeau = true}
+    }
+    if (!drapeau){
+      reply.code(404).send({error : "Book not found"})
+    }
+    reply.code(200).send(selected_book) ;
   });
 
   const createBookSchema = {
@@ -34,8 +43,14 @@ async function booksMemoryRoute(fastify, options) {
   };
 
   fastify.post('/', { schema: createBookSchema }, async (request, reply) => {
-    //  ⚙️🔥 write your code here ⚙️🔥
-    reply.code(404).send({ error: 'Not implemented' });
+    const {title, author} = request.body;
+    if (title.length == 0 | author.length ==0){
+      reply.code(400);
+      return { error: "Name is required" }
+    }
+    const book = {id : books.length , title : title, author : author};
+    books.push(book);
+    reply.code(201).send(book);
   });
 
   const updateBookSchema = {
@@ -56,8 +71,25 @@ async function booksMemoryRoute(fastify, options) {
   };
 
   fastify.put('/:id', { schema: updateBookSchema }, async (request, reply) => {
-    //  ⚙️🔥 write your code here ⚙️🔥
-    reply.code(404).send({ error: 'Not implemented' });
+    const {id} = request.params;
+    const {title, author} = request.body;
+    let updated_book = {};
+    let drapeau = false;
+    for (let book of books){
+      if (book.id == id){
+        updated_book = book;
+        drapeau = true}
+    }
+    if (!drapeau){
+      reply.code(404).send({error : "Book not found"})
+    }
+    if (title.length != 0){
+      updated_book.title = title
+    }
+    if (author.length != 0){
+      updated_book.author = author
+    }
+    reply.code(200).send(updated_book)
   });
 
   const deleteBookSchema = {
@@ -68,9 +100,15 @@ async function booksMemoryRoute(fastify, options) {
       },
     },
   };
+
   fastify.delete('/:id', { schema: deleteBookSchema }, async (request, reply) => {
-    //  ⚙️🔥 write your code here ⚙️🔥
-    reply.code(404).send({ error: 'Not implemented' });
+    const {id} = request.params;
+    for (let book of books){
+      if (book.id == id){
+        books.splice(ParseInt(id), 1);
+        reply.code(204)}
+    }
+    reply.code(404).send({error : "Book not found"});
   });
 }
 

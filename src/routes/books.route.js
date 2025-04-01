@@ -17,6 +17,7 @@ async function booksRoute(fastify, options) {
   fastify.get('/:id', { schema: getBookSchema }, async (request, reply) => {
     //  ⚙️🔥 write your code here ⚙️🔥
     // tips : look about findUnique
+    findUnique
     reply.code(404).send({ error: 'Not implemented' });
   });
 
@@ -32,8 +33,15 @@ async function booksRoute(fastify, options) {
   };
 
   fastify.post('/', { schema: createBookSchema }, async (request, reply) => {
-    //  ⚙️🔥 write your code here ⚙️🔥
-    reply.code(404).send({ error: 'Not implemented' });
+    const books = await fastify.prisma.book.findMany()
+    const {title, author} = request.body;
+    if (title.length == 0 | author.length ==0){
+      reply.code(400);
+      return { error: "Name is required" }
+    }
+    const book = {id : books.length, title : title, author : author};
+    books.push(book);
+    reply.code(201).send(book);
   });
 
   const updateBookSchema = {
