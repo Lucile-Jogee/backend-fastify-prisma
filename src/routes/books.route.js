@@ -17,8 +17,8 @@ async function booksRoute(fastify, options) {
   fastify.get('/:id', { schema: getBookSchema }, async (request, reply) => {
     //  ⚙️🔥 write your code here ⚙️🔥
     // tips : look about findUnique
-    findUnique
-    reply.code(404).send({ error: 'Not implemented' });
+    const book = fastify.prima.book.findUnique()
+    reply.code(200).send(book);
   });
 
   const createBookSchema = {

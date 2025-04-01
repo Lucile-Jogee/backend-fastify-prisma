@@ -103,12 +103,14 @@ async function booksMemoryRoute(fastify, options) {
 
   fastify.delete('/:id', { schema: deleteBookSchema }, async (request, reply) => {
     const {id} = request.params;
+    let drapeau = false;
     for (let book of books){
       if (book.id == id){
-        books.splice(ParseInt(id), 1);
+        books.splice(parseInt(id), 1);
+        drapeau = true;
         reply.code(204)}
     }
-    reply.code(404).send({error : "Book not found"});
+    if (!drapeau){reply.code(404).send({error : "Book not found"})}
   });
 }
 
