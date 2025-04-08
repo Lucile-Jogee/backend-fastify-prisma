@@ -28,7 +28,7 @@ const swaggerUiOptions = {
 
 
 import booksRoute from "./routes/books.route.js";
-import route from "./routes/login.books.route.js";
+import userRoute from "./routes/loginbooks.route.js";
 import prismaPlugin from "./plugins/prisma.js";
 import cookie from '@fastify/cookie';
 import session from '@fastify/session';
@@ -42,7 +42,7 @@ const registerApp = async (app, opt) => {
     prefix: '/',
   });
   app.register(booksRoute, { prefix: "/books" });
-  app.register(route, { prefix: "/user" });
+  app.register(userRoute, { prefix: "/user" });
   app.register(cookie);
   app.register(session, {
     secret: 'un_secret_pour_la_session_qui_fait_plus_de_32_caractères',

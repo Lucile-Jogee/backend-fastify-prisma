@@ -1,0 +1,27 @@
+<html>
+    <body>
+        <div id = 'message'></div>
+        <script>
+            const messageDiv = document.getElementsById("message")
+
+            function handleForm (form, url) {
+                const formulaire = document.getElementById(form);
+                formulaire.onsubmit(async (ev) =>  {
+                    const formData = new FormData(ev.target);
+                    const body = new URLSearchParams(formData);
+                    const res = await fetch(url, {
+                        method : 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded'},
+                        body
+                        })
+                    const data = await res.json;
+                    messageDiv.textContent = res.ok ? 'ok' + data.message : 'nope' + (data.error || 'Erreur')
+                    if (res.ok) setTimeout(() => window.location.hretf = '/books.html', 1000)
+                    })
+            }
+
+            handleForm('register-form', '/user/register');
+            handleForm('login-form', '/user/login');
+        </script>
+    </body>
+</html>
