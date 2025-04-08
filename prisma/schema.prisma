@@ -15,7 +15,25 @@ datasource db {
 
 model Book {
   id        Int      @id @default(autoincrement())
-  title     String
+  title     String   
   author    String
   createdAt DateTime @default(now())
+  comments  Comment[]
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  username String   
+  password String
+  comments  Comment[] 
+}
+
+model Comment {
+  id        Int @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  user      User   @relation(fields: [userId], references: [id])
+  book      Book   @relation(fields: [bookId], references: [id])
+  userId    Int
+  bookId    Int
 }

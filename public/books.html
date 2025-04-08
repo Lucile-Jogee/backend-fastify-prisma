@@ -1,0 +1,10 @@
+<html>
+    <body>
+        <script>
+            const livres = await fetch("/books"); // On est dans le fichier client, on veut appeler le backend, l'absence de premier argument indique un get. Si la route existe, il va l'effectuer.
+            let book = document.createElement("div");
+            book.textContent = livres;
+
+        </script>
+    </body>
+</html>

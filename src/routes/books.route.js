@@ -23,7 +23,7 @@ async function booksRoute(fastify, options) {
       }
       return book;
     });
-  
+    
     const createBookSchema = {
       body: {
         type: 'object',
